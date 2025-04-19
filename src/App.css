@@ -14,3 +14,9 @@
     max-width: 10%;
     font-size: 16px;
 }
+
+.login-form button {
+    max-width: 5%;
+    font-size: 16px;
+    border-radius: 4px;
+}

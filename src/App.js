@@ -30,9 +30,9 @@ class App extends Component {
       <div>
         <h1>Login</h1>
         {this.loginForm()}
-        <text>
+        <p>
           {this.state.loginMessage}
-        </text>
+        </p>
       </div>
     );
   }

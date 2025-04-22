@@ -44,4 +44,3 @@ describe('App', () => {
         expect(screen.getByText(/Usuário ou senha incorretos/i)).toBeInTheDocument();
     });
 });
-

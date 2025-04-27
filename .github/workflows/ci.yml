@@ -26,6 +26,7 @@ jobs:
           context: .
           push: false
           tags: user/app:latest
+          load: true
 
       - name: Save Docker image to a tar file
         id: save-image

@@ -1,0 +1,28 @@
+.app-container {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-form input {
+    width: auto;
+    max-width: 10%;
+    font-size: 16px;
+}
+
+.login-form button {
+    max-width: 5%;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.button-cadastro {
+    max-width: 20%;
+    font-size: 16px;
+    border-radius: 4px;
+}

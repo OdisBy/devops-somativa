@@ -48,7 +48,7 @@ jobs:
 
       - name: Use Docker image from build-docker
         run: |
-          docker run --rm user/app:latest npm test -- --ci --watchAll=false
+          docker run --rm ${{ needs.build-docker.outputs.image-tag }} npm test -- --ci --watchAll=false
 
   notify-discord:
     name: Notify Discord

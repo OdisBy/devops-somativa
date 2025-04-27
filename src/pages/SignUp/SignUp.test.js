@@ -45,6 +45,6 @@ describe('SignUp Component', () => {
 
         fireEvent.click(submitButton);
 
-        expect(screen.getByText(/aPor favor, preencha todos os campos!/i)).toBeInTheDocument();
+        expect(screen.getByText(/Por favor, preencha todos os campos!/i)).toBeInTheDocument();
     });
 });

@@ -9,7 +9,7 @@ jobs:
     name: Build Docker
     runs-on: ubuntu-latest
     outputs:
-      image-tag: user/app:latest
+      image-tar: ${{ steps.save-image.outputs.image-tar }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,6 +27,18 @@ jobs:
           push: false
           tags: user/app:latest
 
+      - name: Save Docker image to a tar file
+        id: save-image
+        run: |
+          docker save -o app-image.tar user/app:latest
+          echo "image-tar=app-image.tar" >> $GITHUB_OUTPUT
+
+      - name: Upload Docker image as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: app-image.tar
+
   build-and-tests:
     name: Build Project and run tests on Docker
     runs-on: ubuntu-latest
@@ -34,6 +46,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Load Docker image
+        run: docker load -i app-image.tar
 
       - name: Create .env file from GitHub Secrets
         run: |
@@ -46,9 +66,9 @@ jobs:
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
           echo "REACT_APP_FIREBASE_MEASUREMENT_ID=${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }}" >> .env
 
-      - name: Use Docker image from build-docker
+      - name: Run tests inside Docker
         run: |
-          docker run --rm ${{ needs.build-docker.outputs.image-tag }} npm test -- --ci --watchAll=false
+          docker run --rm user/app:latest npm test -- --ci --watchAll=false
 
   notify-discord:
     name: Notify Discord

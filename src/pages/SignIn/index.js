@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import firebase from '../../Firebase';
 import './sign_in.css';
 
@@ -56,6 +56,7 @@ class SignIn extends Component {
                     size="20"
                     name="email"
                     placeholder="Email"
+                    data-testid="email-input"
                     onChange={(e) => this.handleEmailChange(e)}
                 />
 
@@ -64,10 +65,17 @@ class SignIn extends Component {
                     size="20"
                     name="password"
                     placeholder="Senha"
+                    data-testid="password-input"
                     onChange={(e) => this.handlePasswordChange(e)}
                 />
 
-                <button type="button" onClick={() => this.handleLogin()}>Acessar</button>
+                <button
+                    type="button"
+                    data-testid="submit-button"
+                    onClick={() => this.handleLogin()}
+                >
+                    Acessar
+                </button>
             </div>
         );
     }

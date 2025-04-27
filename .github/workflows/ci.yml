@@ -8,6 +8,8 @@ jobs:
   build-docker:
     name: Build Docker
     runs-on: ubuntu-latest
+    outputs:
+      image-tag: user/app:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,9 +35,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v3
-
       - name: Create .env file from GitHub Secrets
         run: |
           cp .env.example .env
@@ -47,10 +46,9 @@ jobs:
           echo "REACT_APP_FIREBASE_APP_ID=${{ secrets.REACT_APP_FIREBASE_APP_ID }}" >> .env
           echo "REACT_APP_FIREBASE_MEASUREMENT_ID=${{ secrets.REACT_APP_FIREBASE_MEASUREMENT_ID }}" >> .env
 
-      - name: Run tests in Docker
+      - name: Use Docker image from build-docker
         run: |
-          docker build -t react-test .
-          docker run --rm react-test npm test -- --ci --watchAll=false
+          docker run --rm user/app:latest npm test -- --ci --watchAll=false
 
   notify-discord:
     name: Notify Discord
@@ -62,3 +60,4 @@ jobs:
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}

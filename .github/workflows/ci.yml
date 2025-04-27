@@ -77,8 +77,17 @@ jobs:
     needs: [build-docker, build-and-tests]
     if: always()
     steps:
+      - name: Set workflow result
+        id: set-result
+        run: |
+          if [[ "${{ needs.build-docker.result }}" == "failure" || "${{ needs.build-and-tests.result }}" == "failure" ]]; then
+            echo "result=failure" >> $GITHUB_OUTPUT
+          else
+            echo "result=success" >> $GITHUB_OUTPUT
+          fi
+
       - name: Notify Discord
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          status: ${{ job.status }}
+          status: ${{ steps.set-result.outputs.result }}

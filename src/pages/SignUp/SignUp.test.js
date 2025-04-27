@@ -1,34 +1,47 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SignUp from './SignUp';
+import { MemoryRouter } from 'react-router';
+import SignUp from './index.js';
 
 describe('SignUp Component', () => {
     test('Teste de UI', () => {
-        render(<SignUp />);
-        expect(screen.getByLabelText(/Nome/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Senha/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Cadastrar/i })).toBeInTheDocument();
+        render(
+            <MemoryRouter>
+                <SignUp />
+            </MemoryRouter>
+        );
+        expect(screen.getByTestId('name-input')).toBeInTheDocument();
+        expect(screen.getByTestId('email-input')).toBeInTheDocument();
+        expect(screen.getByTestId('password-input')).toBeInTheDocument();
+        expect(screen.getByTestId('submit-button')).toBeInTheDocument();
     });
 
     test('Testar digitar nome, email e senha', () => {
-        render(<SignUp />);
-        const nameInput = screen.getByLabelText(/Nome/i);
-        const emailInput = screen.getByLabelText(/Email/i);
-        const passwordInput = screen.getByLabelText(/Senha/i);
+        render(
+            <MemoryRouter>
+                <SignUp />
+            </MemoryRouter>
+        );
+        const nameInput = screen.getByTestId('name-input');
+        const emailInput = screen.getByTestId('email-input');
+        const passwordInput = screen.getByTestId('password-input');
 
-        fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-        fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.change(nameInput, { target: { value: 'Nome legal' } });
+        fireEvent.change(emailInput, { target: { value: 'teste@teste.com' } });
+        fireEvent.change(passwordInput, { target: { value: '1234567' } });
 
-        expect(nameInput.value).toBe('John Doe');
-        expect(emailInput.value).toBe('john@example.com');
-        expect(passwordInput.value).toBe('password123');
+        expect(nameInput.value).toBe('Nome legal');
+        expect(emailInput.value).toBe('teste@teste.com');
+        expect(passwordInput.value).toBe('1234567');
     });
 
     test('Aparecer erro caso campos estejam vazios', () => {
-        render(<SignUp />);
-        const submitButton = screen.getByRole('button', { name: /Cadastrar/i });
+        render(
+            <MemoryRouter>
+                <SignUp />
+            </MemoryRouter>
+        );
+        const submitButton = screen.getByTestId('submit-button');
 
         fireEvent.click(submitButton);
 

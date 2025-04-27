@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import React, { Component } from 'react';
 import firebase from '../../Firebase';
 import './sign_up.css';
@@ -59,6 +59,7 @@ class SignUp extends Component {
                     size="20"
                     name="email"
                     placeholder="Email"
+                    data-testid="email-input"
                     onChange={(e) => this.handleEmailChange(e)}
                 />
 
@@ -67,6 +68,7 @@ class SignUp extends Component {
                     size="20"
                     name="name"
                     placeholder="Nome"
+                    data-testid="name-input"
                     onChange={(e) => this.handleNameChange(e)}
                 />
 
@@ -76,6 +78,7 @@ class SignUp extends Component {
                     size="20"
                     name="lastName"
                     placeholder="Sobrenome"
+                    data-testid="lastName-input"
                     onChange={(e) => this.handleLastNameChange(e)}
                 />
 
@@ -85,6 +88,7 @@ class SignUp extends Component {
                     size="20"
                     name="birthDate"
                     placeholder="Data de Nascimento"
+                    data-testid="birthDate-input"
                     onChange={(e) => this.handleBirthDateChange(e)}
                 />
 
@@ -94,10 +98,13 @@ class SignUp extends Component {
                     size="20"
                     name="password"
                     placeholder="Senha"
+                    data-testid="password-input"
                     onChange={(e) => this.handlePasswordChange(e)}
                 />
 
-                <button type="button" onClick={() => this.handleLogin()}>Cadastrar</button>
+                <button type="button" data-testid="submit-button" onClick={() => this.handleLogin()}>
+                    Cadastrar
+                </button>
             </div>
         );
     }

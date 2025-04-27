@@ -1,30 +1,43 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SignIn from './SignIn';
+import { MemoryRouter } from 'react-router';
+import SignInWrapper from './index.js';
 
 describe('SignIn Component', () => {
     test('Teste de UI', () => {
-        render(<SignIn />);
-        expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Senha/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Entrar/i })).toBeInTheDocument();
+        render(
+            <MemoryRouter>
+                <SignInWrapper />
+            </MemoryRouter>
+        );
+        expect(screen.getByTestId('email-input')).toBeInTheDocument();
+        expect(screen.getByTestId('password-input')).toBeInTheDocument();
+        expect(screen.getByTestId('submit-button')).toBeInTheDocument();
     });
 
     test('Testar usuário digitar email e senha e atualizar', () => {
-        render(<SignIn />);
-        const emailInput = screen.getByLabelText(/Email/i);
-        const passwordInput = screen.getByLabelText(/Senha/i);
+        render(
+            <MemoryRouter>
+                <SignInWrapper />
+            </MemoryRouter>
+        );
+        const emailInput = screen.getByTestId('email-input');
+        const passwordInput = screen.getByTestId('password-input');
 
-        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.change(emailInput, { target: { value: 'teste@teste.com' } });
+        fireEvent.change(passwordInput, { target: { value: '1234567' } });
 
-        expect(emailInput.value).toBe('test@example.com');
-        expect(passwordInput.value).toBe('password123');
+        expect(emailInput.value).toBe('teste@teste.com');
+        expect(passwordInput.value).toBe('1234567');
     });
 
     test('Aparecer erro caso campos estejam vazios', () => {
-        render(<SignIn />);
-        const submitButton = screen.getByRole('button', { name: /Entrar/i });
+        render(
+            <MemoryRouter>
+                <SignInWrapper />
+            </MemoryRouter>
+        );
+        const submitButton = screen.getByTestId('submit-button');
 
         fireEvent.click(submitButton);
 
